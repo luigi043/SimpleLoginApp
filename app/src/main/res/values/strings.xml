@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">SimpleLoginApp</string>
+    <string name="app_name">Quantum Login</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">QUANTUM ACCESS</string>
+    <string name="email_hint">Quantum Email</string>
+    <string name="password_hint">Access Code</string>
+    <string name="login_button">INITIATE LOGIN</string>
+    <string name="demo_credentials">Demo: demo@example.com / password123</string>
+    <string name="email_required">Email is required</string>
+    <string name="invalid_email">Invalid email format</string>
+    <string name="password_required">Password is required</string>
+    <string name="password_short">Password must be at least 6 characters</string>
+    
+    <!-- Profile Screen -->
+    <string name="profile_title">QUANTUM PROFILE</string>
+    <string name="user_name">QUANTUM USER</string>
+    <string name="member_since">MEMBER SINCE</string>
+    <string name="account_type">ACCOUNT TYPE</string>
+    <string name="free_account">FREE TIER</string>
+    <string name="logout_button">LOGOUT</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 </resources>

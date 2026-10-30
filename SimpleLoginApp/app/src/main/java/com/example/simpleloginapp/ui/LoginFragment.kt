@@ -47,7 +47,6 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflar layout usando view binding
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -79,10 +78,11 @@ class LoginFragment : Fragment() {
     private fun checkIfUserIsLoggedIn() {
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         if (isLoggedIn) {
-            // Pequeno delay para melhor experiência
             Handler(Looper.getMainLooper()).postDelayed({
-                navigateToProfile()
-            }, 1000)
+                if (isAdded && findNavController().currentDestination?.id == R.id.loginFragment) {
+                    navigateToProfile()
+                }
+            }, 600)
         }
     }
     
@@ -90,15 +90,12 @@ class LoginFragment : Fragment() {
      * Configura animações iniciais
      */
     private fun setupAnimations() {
-        // Animação de fade in para o título
         val fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
         binding.tvTitle.startAnimation(fadeIn)
         
-        // Animação de slide up para o card
         val slideUp = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_right)
         binding.cardLogin.startAnimation(slideUp)
         
-        // Animação de pulso para o botão
         val pulse = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse)
         binding.btnLogin.startAnimation(pulse)
     }
@@ -179,8 +176,8 @@ class LoginFragment : Fragment() {
      * Tenta realizar login
      */
     private fun attemptLogin() {
-        val email = binding.etEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString().trim()
+        val email = binding.etEmail.text?.toString()?.trim().orEmpty()
+        val password = binding.etPassword.text?.toString()?.trim().orEmpty()
         
         // Validar inputs
         if (!validateInputs(email, password)) {
@@ -197,10 +194,12 @@ class LoginFragment : Fragment() {
             // Mostrar feedback positivo
             showLoginSuccess()
             
-            // Navegar para perfil após delay
+            // Navegar para perfil após delay com verificação segura de destino
             Handler(Looper.getMainLooper()).postDelayed({
-                navigateToProfile()
-            }, 1500)
+                if (isAdded && findNavController().currentDestination?.id == R.id.loginFragment) {
+                    navigateToProfile()
+                }
+            }, 1200)
         } else {
             // Mostrar erro
             showLoginError()
@@ -243,12 +242,12 @@ class LoginFragment : Fragment() {
      */
     private fun authenticateUser(email: String, password: String): Boolean {
         // Credenciais demo
-        if (email == demoEmail && password == demoPassword) {
+        if (email.equals(demoEmail, ignoreCase = true) && password == demoPassword) {
             return true
         }
         
-        // Qualquer email com senha de pelo menos 6 caracteres (para teste)
-        if (email.isNotEmpty() && password.length >= 6) {
+        // Qualquer email válido com senha de pelo menos 6 caracteres (para teste)
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length >= 6) {
             return true
         }
         
@@ -272,18 +271,11 @@ class LoginFragment : Fragment() {
      * Mostra feedback de login bem-sucedido
      */
     private fun showLoginSuccess() {
-        // Desabilitar botão durante animação
         binding.btnLogin.isEnabled = false
-        
-        // Mudar texto do botão
         binding.btnLogin.text = "✓ ACCESS GRANTED"
-        
-        // Mudar cor do botão
         binding.btnLogin.setBackgroundColor(
             ContextCompat.getColor(requireContext(), R.color.success)
         )
-        
-        // Mostrar Toast
         Toast.makeText(
             requireContext(),
             "Login successful!",
@@ -295,11 +287,9 @@ class LoginFragment : Fragment() {
      * Mostra feedback de erro no login
      */
     private fun showLoginError() {
-        // Animação de shake
         val shake = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
         binding.cardLogin.startAnimation(shake)
         
-        // Snackbar de erro
         Snackbar.make(
             binding.root,
             "Invalid credentials. Try: demo@example.com / password123",

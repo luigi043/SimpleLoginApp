@@ -3,12 +3,13 @@ package com.example.simpleloginapp.ui
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.simpleloginapp.R
@@ -67,21 +68,17 @@ class ProfileFragment : Fragment() {
      * Carrega dados do usuário do SharedPreferences
      */
     private fun loadUserData() {
-        // Obter dados salvos
         val email = sharedPreferences.getString("userEmail", "user@example.com") ?: "user@example.com"
         val userName = sharedPreferences.getString("userName", "User") ?: "User"
         val loginTime = sharedPreferences.getLong("loginTimestamp", System.currentTimeMillis())
         
-        // Atualizar UI
         binding.tvUserEmail.text = email
         binding.tvUserName.text = userName.uppercase(Locale.getDefault())
         
-        // Formatar data de login
         val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
         val formattedDate = dateFormat.format(Date(loginTime))
         binding.tvMemberSince.text = formattedDate.uppercase(Locale.getDefault())
         
-        // Determinar tipo de conta (demo)
         val accountType = if (email.contains("@example.com")) {
             "PREMIUM TIER"
         } else {
@@ -94,15 +91,12 @@ class ProfileFragment : Fragment() {
      * Configura animações da tela
      */
     private fun setupAnimations() {
-        // Animação de fade in para o avatar
         val fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
         binding.ivAvatar.startAnimation(fadeIn)
         
-        // Animação de slide up para o card
         val slideUp = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_right)
         binding.cardProfile.startAnimation(slideUp)
         
-        // Animação de pulso contínuo para o avatar
         val pulse = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse)
         binding.ivAvatar.startAnimation(pulse)
     }
@@ -147,10 +141,12 @@ class ProfileFragment : Fragment() {
         val fadeOut = AnimationUtils.loadAnimation(requireContext(), android.R.anim.fade_out)
         binding.cardProfile.startAnimation(fadeOut)
         
-        // Navegar de volta para login após delay
-        android.os.Handler(Looper.getMainLooper()).postDelayed({
-            navigateToLogin()
-        }, 1000)
+        // Navegar de volta para login após delay com verificação de segurança
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (isAdded && findNavController().currentDestination?.id == R.id.profileFragment) {
+                navigateToLogin()
+            }
+        }, 800)
     }
     
     /**
@@ -163,11 +159,5 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-    
-    companion object {
-        // Obter Looper do main thread
-        private val Looper.getMainLooper: android.os.Looper
-            get() = android.os.Looper.getMainLooper()
     }
 }

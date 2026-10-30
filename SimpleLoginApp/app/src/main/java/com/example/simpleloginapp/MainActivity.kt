@@ -2,9 +2,8 @@ package com.example.simpleloginapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.simpleloginapp.databinding.ActivityMainBinding
 
 /**
@@ -14,6 +13,7 @@ import com.example.simpleloginapp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,29 +22,22 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        // Configurar navegação
-        setupNavigation()
+        // Configurar navegação de forma segura via NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+        if (navHostFragment != null) {
+            navController = navHostFragment.navController
+        }
     }
     
     /**
-     * Configura a navegação entre fragments
-     */
-    private fun setupNavigation() {
-        val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(
-                R.id.loginFragment,
-                R.id.profileFragment
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-    }
-    
-    /**
-     * Gerencia botão de voltar na action bar
+     * Gerencia navegação de retorno
      */
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return if (::navController.isInitialized) {
+            navController.navigateUp() || super.onSupportNavigateUp()
+        } else {
+            super.onSupportNavigateUp()
+        }
     }
 }
