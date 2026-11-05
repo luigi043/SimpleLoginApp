@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+**/build/
+*.log
+.vercel/
+node_modules/
+playwright-report/
+test-results/
+.kotlin/
