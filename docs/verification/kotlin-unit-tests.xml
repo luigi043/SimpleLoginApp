@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.simpleloginapp.auth.DemoAuthTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-05T12:10:00.509Z" hostname="TOOLS" time="0.055">
+  <properties/>
+  <testcase name="distinguishesMissingAndMalformedInput" classname="com.example.simpleloginapp.auth.DemoAuthTest" time="0.052"/>
+  <testcase name="acceptsOnlyThePublishedDemoCredentials" classname="com.example.simpleloginapp.auth.DemoAuthTest" time="0.001"/>
+  <testcase name="preservesPasswordWhitespaceAndCase" classname="com.example.simpleloginapp.auth.DemoAuthTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///C:/Users/cluiz/OneDrive%20-%20Instituto%20Politecnico%20de%20Beja/Desktop/phone%20app/SimpleLoginApp/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+
+BUILD SUCCESSFUL in 1m 18s
+83 actionable tasks: 25 executed, 58 up-to-date

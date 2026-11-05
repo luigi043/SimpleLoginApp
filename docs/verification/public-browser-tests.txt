@@ -1,0 +1,19 @@
+
+Running 10 tests using 1 worker
+
+(node:20552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [desktop] › demo\e2e\login.spec.js:5:1 › validation, login, refresh, cancel and confirm logout (9.0s)
+  ok  2 [desktop] › demo\e2e\login.spec.js:50:1 › keyboard login and Escape dismiss logout without losing session (852ms)
+  ok  3 [desktop] › demo\e2e\login.spec.js:62:1 › JavaScript disabled cannot submit credentials (576ms)
+  ok  4 [desktop] › demo\e2e\login.spec.js:71:1 › blocked tab storage falls back to memory and shows a notice (1.4s)
+  ok  5 [desktop] › demo\e2e\login.spec.js:82:1 › public deployment serves security headers and the exact tested APK (1.1s)
+(node:27552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  6 [mobile] › demo\e2e\login.spec.js:5:1 › validation, login, refresh, cancel and confirm logout (4.6s)
+  ok  7 [mobile] › demo\e2e\login.spec.js:50:1 › keyboard login and Escape dismiss logout without losing session (1.9s)
+  ok  8 [mobile] › demo\e2e\login.spec.js:62:1 › JavaScript disabled cannot submit credentials (657ms)
+  ok  9 [mobile] › demo\e2e\login.spec.js:71:1 › blocked tab storage falls back to memory and shows a notice (1.2s)
+  ok 10 [mobile] › demo\e2e\login.spec.js:82:1 › public deployment serves security headers and the exact tested APK (698ms)
+
+  10 passed (27.2s)

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 
 test('validation, login, refresh, cancel and confirm logout', async ({ page }, testInfo) => {
   await mkdir('docs/verification/screenshots', { recursive: true });
@@ -76,4 +77,16 @@ test('blocked tab storage falls back to memory and shows a notice', async ({ pag
   await page.screenshot({ path: `docs/verification/screenshots/web-${testInfo.project.name}-storage-unavailable.png`, fullPage: true });
   await page.reload();
   await expect(page.getByRole('button', { name: 'Log in to demo' })).toBeVisible();
+});
+
+test('public deployment serves security headers and the exact tested APK', async ({ request }) => {
+  test.skip(!process.env.DEMO_URL, 'Publication check runs against the public deployment.');
+  const home = await request.get('/');
+  expect(home.status()).toBe(200);
+  expect(home.headers()['content-security-policy']).toContain("connect-src 'none'");
+  expect(home.headers()['x-content-type-options']).toBe('nosniff');
+  const apk = await request.get('/quantum-login-demo.apk');
+  expect(apk.status()).toBe(200);
+  const digest = data => createHash('sha256').update(data).digest('hex');
+  expect(digest(await apk.body())).toBe(digest(await readFile('demo/quantum-login-demo.apk')));
 });

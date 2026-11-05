@@ -22,3 +22,4 @@ playwright-report/
 test-results/
 .kotlin/
 public/
+.verification-diagnostics/
