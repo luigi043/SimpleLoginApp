@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try the Quantum Login offline demo. Explore validation, a local demo profile and logout using public sample credentials.">
+  <title>Quantum Login | Interactive demo</title>
+  <link rel="stylesheet" href="styles.css"><script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="./" aria-label="Quantum Login home"><span class="brand-mark" aria-hidden="true">Q</span> Quantum Login</a><span class="badge">Interactive web demo</span></header>
+  <main class="layout">
+    <section class="intro" aria-labelledby="intro-title">
+      <p class="eyebrow">ANDROID LOGIN DEMONSTRATION</p>
+      <h1 id="intro-title">A small app.<br>A complete login flow.</h1>
+      <p class="lede">Try input validation, open a demo profile, and log out. This browser companion follows the native Android app's flow.</p>
+      <div class="notice"><strong>Use sample credentials only.</strong><p>This is an offline UI demonstration. It has no server authentication, registration, or real accounts. Never enter a real password.</p></div>
+      <div class="links"><a class="download" href="quantum-login-demo.apk" download>Download Android APK <span aria-hidden="true">↗</span></a><a href="https://github.com/luigi043/SimpleLoginApp/tree/improve/login-demo">View source on GitHub</a></div>
+      <p class="fine">Debug APK for Android 7.0 or later. Install only if you trust the source. The browser stores a demo email and session time in this tab's session storage. Passwords are never saved or sent to a server.</p>
+      <details><summary>What does the demo cover?</summary><p>Login, required-field and invalid-input errors, incorrect credentials, profile, session restoration on refresh, password visibility, and logout confirmation. Closing this tab ends the browser session. Android saves its local session until logout or app data is cleared.</p><p>The APK is the native app. This page is a web implementation, not an Android emulator.</p></details>
+    </section>
+    <section class="app-shell" aria-label="Try the login demo">
+      <div class="app-top"><span class="dot" aria-hidden="true"></span> LOCAL DEMO</div>
+      <div id="login">
+        <h2>Quantum Access</h2><p class="subtitle">Explore a simple local login flow.</p>
+        <div class="card"><p class="card-note">Offline demo only. No account is created.</p>
+          <noscript><p class="error">Enable JavaScript to try the interactive demo. No credentials can be submitted while JavaScript is disabled.</p></noscript><form id="form" novalidate autocomplete="off">
+            <label for="email">Email</label><input id="email" type="email" inputmode="email" autocapitalize="none" spellcheck="false" aria-describedby="email-error">
+            <p id="email-error" class="error" aria-live="polite"></p>
+            <label for="password">Password</label><div class="password-wrap"><input id="password" type="password" aria-describedby="password-error" autocomplete="off"><button id="show-password" type="button" aria-pressed="false" aria-controls="password">Show</button></div>
+            <p id="password-error" class="error" aria-live="polite"></p>
+            <p id="credentials-error" class="error" role="alert"></p>
+            <button id="submit" class="primary" type="submit" disabled>Log in to demo <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="credentials"><span>PUBLIC SAMPLE CREDENTIALS</span><code>demo@example.com<br>password123</code><button id="fill-demo" class="text-button" type="button">Fill sample credentials</button></div>
+        </div>
+      </div>
+      <div id="profile" hidden>
+        <h2 id="profile-title" tabindex="-1">Your demo profile</h2><p class="subtitle">You are exploring a local session.</p>
+        <div class="card"><div class="avatar" aria-hidden="true">D</div><h3>Demo User</h3><p id="profile-email" class="profile-email"></p><dl><dt>SESSION STARTED</dt><dd id="started-at"></dd><dt>ACCOUNT TYPE</dt><dd>Local demo</dd></dl><p class="card-note">This profile exists only in this browser tab. Logging out clears the saved session. There is no verified account.</p><p id="storage-note" class="error" hidden>Tab storage is unavailable. Refreshing will end this session.</p></div>
+        <button id="logout" class="primary" type="button">Log out</button>
+      </div>
+      <p class="app-footer">SAMPLE DATA · NO SERVER CONNECTION</p>
+    </section>
+  </main>
+  <footer class="site-footer">Quantum Login · Kotlin Android app and browser companion</footer>
+  <dialog id="logout-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description"><h2 id="dialog-title">Log out of the demo?</h2><p id="dialog-description">The saved demo session will be cleared from this browser tab.</p><div class="dialog-actions"><button id="cancel-logout" class="secondary" autofocus>Cancel</button><button id="confirm-logout" class="primary">Log out</button></div></dialog>
+</body>
+</html>
+

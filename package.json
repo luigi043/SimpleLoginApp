@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test demo/auth.test.js",
+    "test:e2e": "playwright test",
+    "demo": "node scripts/serve-demo.mjs"
+  },
+  "devDependencies": { "@playwright/test": "1.64.1" }
+}
