@@ -2,21 +2,25 @@ import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 
 test('validation, login, refresh, cancel and confirm logout', async ({ page }, testInfo) => {
+  await mkdir('docs/verification/screenshots', { recursive: true });
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Log in to demo' })).toBeEnabled();
   await expect(page.locator('body')).toHaveJSProperty('scrollWidth', await page.locator('body').evaluate(el => el.clientWidth));
   await page.getByRole('button', { name: 'Log in to demo' }).click();
   await expect(page.locator('#email-error')).toHaveText('Enter your email.');
   await expect(page.locator('#password-error')).toHaveText('Enter your password.');
+  await page.screenshot({ path: `docs/verification/screenshots/web-${testInfo.project.name}-required-fields.png`, fullPage: true });
   await page.getByLabel('Email', { exact: true }).fill('invalid');
   await page.getByLabel('Password', { exact: true }).fill('123');
   await page.getByRole('button', { name: 'Log in to demo' }).click();
   await expect(page.locator('#email-error')).toHaveText('Enter a valid email address.');
   await expect(page.locator('#password-error')).toHaveText('Use at least 6 characters.');
+  await page.screenshot({ path: `docs/verification/screenshots/web-${testInfo.project.name}-invalid-input.png`, fullPage: true });
   await page.getByLabel('Email', { exact: true }).fill('other@example.com');
   await page.getByLabel('Password', { exact: true }).fill('wrong-password');
   await page.getByRole('button', { name: 'Log in to demo' }).click();
   await expect(page.getByRole('alert')).toContainText('Credentials do not match');
+  await page.screenshot({ path: `docs/verification/screenshots/web-${testInfo.project.name}-credentials-mismatch.png`, fullPage: true });
   await page.getByRole('button', { name: 'Fill sample credentials' }).click();
   await page.getByRole('button', { name: 'Show', exact: true }).click();
   await expect(page.locator('#password')).toHaveAttribute('type', 'text');
@@ -63,12 +67,13 @@ test('JavaScript disabled cannot submit credentials', async ({ browser }) => {
   await context.close();
 });
 
-test('blocked tab storage falls back to memory and shows a notice', async ({ page }) => {
+test('blocked tab storage falls back to memory and shows a notice', async ({ page }, testInfo) => {
   await page.addInitScript(() => Object.defineProperty(window, 'sessionStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } }));
   await page.goto('/');
   await page.getByRole('button', { name: 'Fill sample credentials' }).click();
   await page.getByRole('button', { name: 'Log in to demo' }).click();
   await expect(page.locator('#storage-note')).toBeVisible();
+  await page.screenshot({ path: `docs/verification/screenshots/web-${testInfo.project.name}-storage-unavailable.png`, fullPage: true });
   await page.reload();
   await expect(page.getByRole('button', { name: 'Log in to demo' })).toBeVisible();
 });
